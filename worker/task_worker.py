@@ -58,7 +58,7 @@ class TaskWorker:
                 result="OK",
             )
 
-            logger.warning(f"processed task id={task_id}")
+            logger.info(f"processed task id={task_id}")
 
         except Exception as exc:
             logger.warning(f"task id={task_id} was finished with error: {str(exc)}")
