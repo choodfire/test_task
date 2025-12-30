@@ -7,6 +7,7 @@ from app.messaging.producer import TaskProducer
 from app.models.consts import TaskPriority, TaskStatus
 from app.schemas.task import TaskCreateRequest
 from app.services.task_service import TaskService
+from tests.conftest import fake
 
 pytestmark = pytest.mark.asyncio
 
@@ -14,8 +15,8 @@ pytestmark = pytest.mark.asyncio
 @patch.object(TaskProducer, "publish")
 async def test_create_task(rmq_mock: Mock, task_service: TaskService) -> None:
     payload = TaskCreateRequest(
-        name="Test task",
-        description="Test description",
+        name=fake.name(),
+        description=fake.text(),
         priority=TaskPriority.MEDIUM,
     )
 
@@ -34,8 +35,7 @@ async def test_create_task(rmq_mock: Mock, task_service: TaskService) -> None:
 @patch.object(TaskProducer, "publish")
 async def test_get_task(rmq_mock: Mock, task_service: TaskService) -> None:
     payload = TaskCreateRequest(
-        name="Get task",
-        description=None,
+        name=fake.name(),
         priority=TaskPriority.MEDIUM,
     )
 
@@ -57,14 +57,12 @@ async def test_get_task_not_found(task_service: TaskService) -> None:
 @patch.object(TaskProducer, "publish")
 async def test_list_tasks(rmq_mock: Mock, task_service: TaskService) -> None:
     payload1 = TaskCreateRequest(
-        name="Task 1",
-        description=None,
+        name=fake.name(),
         priority=TaskPriority.MEDIUM,
     )
 
     payload2 = TaskCreateRequest(
-        name="Task 2",
-        description=None,
+        name=fake.name(),
         priority=TaskPriority.MEDIUM,
     )
 
@@ -85,8 +83,7 @@ async def test_list_tasks(rmq_mock: Mock, task_service: TaskService) -> None:
 @patch.object(TaskProducer, "publish")
 async def test_cancel_task_success(rmq_mock: Mock, task_service: TaskService) -> None:
     payload = TaskCreateRequest(
-        name="Cancelable",
-        description=None,
+        name=fake.name(),
         priority=TaskPriority.LOW,
     )
 

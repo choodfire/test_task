@@ -2,6 +2,7 @@ from typing import AsyncGenerator, Generator
 
 import pytest
 from alembic.config import Config
+from faker import Faker
 from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 
@@ -12,6 +13,8 @@ from app.messaging.producer import TaskProducer
 from app.messaging.rabbitmq import get_task_producer
 from app.repositories.task_repository import TaskRepository
 from app.services.task_service import TaskService
+
+fake = Faker()
 
 
 @pytest.fixture(scope="session")

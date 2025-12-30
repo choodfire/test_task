@@ -2,10 +2,11 @@ from fastapi.testclient import TestClient
 
 from app.core.config import settings
 from app.models.consts import TaskPriority
+from tests.conftest import fake
 
 
 def test_create_task(client: TestClient) -> None:
-    data = {"name": "string", "description": "string", "priority": TaskPriority.MEDIUM}
+    data = {"name": fake.name(), "description": fake.text(), "priority": TaskPriority.MEDIUM}
 
     response = client.post(f"{settings.API_V1_STR}/tasks", json=data)
 
@@ -20,7 +21,7 @@ def test_create_task(client: TestClient) -> None:
 def test_get_tasks(client: TestClient) -> None:
     created_tasks = []
     for _ in range(3):
-        data = {"name": "string", "description": "string", "priority": TaskPriority.MEDIUM}
+        data = {"name": fake.name(), "description": fake.text(), "priority": TaskPriority.MEDIUM}
         response = client.post(f"{settings.API_V1_STR}/tasks", json=data)
         assert response.status_code == 201
         content = response.json()
@@ -36,7 +37,7 @@ def test_get_tasks(client: TestClient) -> None:
 
 
 def test_get_task(client: TestClient) -> None:
-    data = {"name": "string", "description": "string", "priority": TaskPriority.LOW}
+    data = {"name": fake.name(), "description": fake.text(), "priority": TaskPriority.LOW}
     response = client.post(f"{settings.API_V1_STR}/tasks", json=data)
     assert response.status_code == 201
     content = response.json()
@@ -53,7 +54,7 @@ def test_get_task(client: TestClient) -> None:
 
 
 def test_delete_task(client: TestClient) -> None:
-    data = {"name": "string", "description": "string", "priority": TaskPriority.LOW}
+    data = {"name": fake.name(), "description": fake.text(), "priority": TaskPriority.LOW}
     response = client.post(f"{settings.API_V1_STR}/tasks", json=data)
     assert response.status_code == 201
     content = response.json()
@@ -65,7 +66,7 @@ def test_delete_task(client: TestClient) -> None:
 
 
 def test_check_task_status(client: TestClient) -> None:
-    data = {"name": "string", "description": "string", "priority": TaskPriority.LOW}
+    data = {"name": fake.name(), "description": fake.text(), "priority": TaskPriority.LOW}
     response = client.post(f"{settings.API_V1_STR}/tasks", json=data)
     assert response.status_code == 201
     content = response.json()
